@@ -1,0 +1,68 @@
+<script type="text/x-red" data-template-name="bmp180">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i>Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+	<br/>
+	<div class="form-row">
+		<label for="node-input-address"><i class="icon-envelope"></i>Address</label>
+		<select type="number" id="node-input-address">
+        <option value=118 data-i18n="bmp180.label.0x76"></option>
+        <option value=119 data-i18n="bmp180.label.0x77"></option>
+		</select>
+	</div>
+	<div class="form-row">
+		<label for="node-input-mode"><i class="icon-filter"></i>Mode</label>
+		<select type="text" id="node-input-mode">
+        <option value=0 data-i18n="bmp180.label.LowResolution"></option>
+        <option value=1 data-i18n="bmp180.label.Normal"></option>
+		<option value=2 data-i18n="bmp180.label.HighResolution"></option>
+		<option value=3 data-i18n="bmp180.label.UltraHighResolution"></option>
+		</select>
+	</div>
+	<div class="form-row">
+		<label for="node-input-units"><i class="icon-filter"></i>Units</label>
+		<select type="text" id="node-input-units">
+        <option value="Metric" data-i18n="bmp180.label.Metric"></option>
+        <option value="Imperial" data-i18n="bmp180.label.Imperial"></option>
+		</select>
+    </div>
+	<div class="form-row">
+		<label for="node-input-sealevel"><i class="icon-filter"></i>P0</label>
+		<input type="text" id="node-input-units" placeholder="SeaLevel">
+    </div>
+	<br>
+</script>
+
+<script type="text/x-red" data-help-name="bmp180">
+    <p>A node that gets data from bmp180 sensor (potentially bmp085)</p>
+    <p>Output returns object with the following values:<b>{temperature, pressure, altitude and unit}</b></p>
+	<p>Sea level pressure parameter (P0) is not mandatory. If not set, will take value of <b>1013.25 hPa</b> in metric unit or <b>29.921 inHg</b> in imperial unit, according to unit selected. The value is used to estimate the altitude</p>
+	<p>Metric is the default base calculation. Imperial is internally computed from metric</p>
+	<p>°C to °F: <b>(T(°C)*1.8)+32</b></p>
+	<p>hPa to inHg: <b>P(Pa)*0.029529983071445</b></p>
+	<p>Altitude: <b>44330*(1 - (P(Pa)/P0(Pa)^(1/5.255))</b></p>
+	<p>m to ft: <b>alt(m)/0.3804</b></p>
+	
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('bmp180', {
+		category: 'i2c',
+		color: '#FFCC66',
+        icon: 'bmp180.png',
+		defaults: {
+			name: {value: "", required: false},
+			address: {value: 0x77,require: true},
+			mode: {value: 0,require: true},
+			units: {value: "Metric",require: true},
+			sealevel: {value: 0, require: false}
+		},
+		inputs: 1,
+		outputs: 1,
+		label: function() {return this.name || "bmp180";},
+		inputLabels: "Trigger",
+		outputLabels: "Temp & Pres",
+        oneditprepare: function() {}
+	})
+</script>

@@ -1,0 +1,26 @@
+{
+    "bmp180": {
+        "label": {
+            "0x76": "0x76",
+            "0x77": "0x77",
+            "LowResolution": "Low resolution(1xsample)",
+            "Normal": "Standard (2xsamples)",
+            "HighResolution": "High resolution (4xsamples)",
+            "UltraHighResolution": "Ultra high resolution (8xsamples",
+            "Imperial": "Imperial (°F, inHg, ft)",
+            "Metric": "Metric (°C, hPa, m)"
+        },
+        "status": {
+            "querying": "querying",
+            "invalid-calendar": "invalid calendar",
+            "next-event": "querying next event",
+            "no-event": "no event",
+            "creating": "creating",
+            "failed": "failed"
+        },
+        "error": {
+            "error": "Error: __error__",
+            "error-details": "Error __code__: __message__"
+        }
+    }
+}
