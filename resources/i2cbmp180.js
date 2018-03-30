@@ -17,7 +17,7 @@ var bmp180 = function (opts) {
     var self = this;
     self.options = _.extend({}, defaultOptions, opts);
     self.events = new EventEmitter();
-    self.wire = new Wire(parseInt(this.options.address,16), {device: this.options.device});
+    self.wire = new Wire(parseInt(this.options.address,10), {device: this.options.device});
     self.events.on('calibrated', function () {
         self.readData(self.userCallback);
     });
