@@ -24,49 +24,12 @@
   "requires": true,
   "dependencies": {
     "events": {
-      "version": "2.0.0",
+      "integrity": "sha512-r/M5YkNg9zwI8QbSf7tsDWWJvO3PGwZXyG7GpFAxtMASnHL2eblFd7iHiGPtyGKKFPZ59S63NeX10Ws6WqGDcg==",
       "resolved": "https://registry.npmjs.org/events/-/events-2.0.0.tgz",
-      "integrity": "sha512-r/M5YkNg9zwI8QbSf7tsDWWJvO3PGwZXyG7GpFAxtMASnHL2eblFd7iHiGPtyGKKFPZ59S63NeX10Ws6WqGDcg=="
+      "version": "2.0.0"
     },
-    "i2c": {
-      "version": "0.2.3",
-      "resolved": "https://registry.npmjs.org/i2c/-/i2c-0.2.3.tgz",
-      "integrity": "sha1-9D9wKBQQJq5IrymQo3RjPR2rPSs=",
-      "requires": {
-        "bindings": "1.2.1",
-        "coffee-script": "1.9.1",
-        "nan": "2.3.5",
-        "repl": "0.1.3",
-        "underscore": "1.8.2"
-      },
-      "dependencies": {
-        "bindings": {
-          "version": "1.2.1",
-          "bundled": true
-        },
-        "coffee-script": {
-          "version": "1.9.1",
-          "bundled": true
-        },
-        "nan": {
-          "version": "2.3.5",
-          "bundled": true
-        },
-        "repl": {
-          "version": "0.1.3",
-          "bundled": true
-        },
-        "underscore": {
-          "version": "1.8.2",
-          "bundled": true
-        }
-      }
-    },
-    "underscore": {
-      "version": "1.8.3",
-      "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.8.3.tgz",
-      "integrity": "sha1-Tz+1OxBuYJf8+ctBCfKl6b36UCI="
-    }
+    "i2c-bus": "^5.2.2",
+    "underscore": "^1.13.2"
   },
   "node-red": {
     "nodes": {

@@ -1,11 +1,11 @@
 '------------------------ Declaration ------------------------'
 
-var Wire = require('i2c');
+const i2c = require('i2c-bus');
 var EventEmitter = require('events').EventEmitter;
 var _ = require('underscore');
 var defaultOptions = {
         'address' : 119,
-        'device' : '/dev/i2c-1',
+        'device' : 1,
         'mode' : 1,
 		'units' : "Meter",
 		'sealevel' : 0
@@ -15,9 +15,13 @@ var defaultOptions = {
 var bmp180 = function (opts) {
 
     var self = this;
+    if( typeof(opts.device) == "string") { opts.device = Number(opts.device); }
     self.options = _.extend({}, defaultOptions, opts);
     self.events = new EventEmitter();
-    self.wire = new Wire(parseInt(this.options.address,10), {device: this.options.device});
+//    self.wire = new Wire(parseInt(this.options.address,10), {device: this.options.device});
+    self.wire = i2c.open(this.options.device, err => {
+	if(err) throw err;
+    });
     self.events.on('calibrated', function () {
         self.readData(self.userCallback);
     });
@@ -92,13 +96,14 @@ bmp180.prototype.readWord = function (register, length, callback) {
         length = 2;
     }
 
-    self.wire.readBytes(register.location, length, function(err, bytes) {
+    var buf = Buffer.alloc(2);
+    self.wire.readI2cBlock(self.options.address, register.location, length, buf, function(err, br, bytes) {
         if (err) {
             throw(err);
         }
 
-        var hi = bytes.readUInt8(0),
-            lo = bytes.readUInt8(1),
+        var hi = bytes[0],
+            lo = bytes[1],
             value;
 
         if (register.type !== 'uint16') {
@@ -150,7 +155,7 @@ bmp180.prototype.waitForCalibrationData = function () {
 '------------------------ Read raw temperature ------------------------'
 bmp180.prototype.readTemperature = function (callback) {
     var self = this;
-    self.wire.writeBytes(self.registers.control.location, new Buffer([self.commands.readTemp]), function(err) {
+    self.wire.writeByte(self.options.address, self.registers.control.location, self.commands.readTemp, function(err) {
         if (err) {
             throw(err);
         }
@@ -173,18 +178,20 @@ bmp180.prototype.convertTemperature = function (raw) {
 '------------------------ Read raw pressure ------------------------'
 bmp180.prototype.readPressure = function (callback) {
     var self = this;
-    self.wire.writeBytes(self.registers.control.location, new Buffer([self.commands.readPressure + (self.options.mode << 6)]), function(err) {
+    self.wire.writeByte(self.options.address, self.registers.control.location, self.commands.readPressure + (self.options.mode << 6), function(err) {
         if (err) {
             throw(err);
         }
         var timeToWait = self.getTimeToWait();
-        setTimeout(function() {self.wire.readBytes(self.registers.pressureData.location, 3, function(err, bytes) {
+	var buf = new Buffer([0,0,0]);
+// TODO: konvertieren auf i2c-bus
+        setTimeout(function() {self.wire.readI2cBlock(self.options.address, self.registers.pressureData.location, 3, buf, function(err, br, bytes) {
                 if (err) {
                     throw(err);
                 }
-                var msb = bytes.readUInt8(0),
-                    lsb = bytes.readUInt8(1),
-                    xlsb = bytes.readUInt8(2),
+                var msb = bytes[0],
+                    lsb = bytes[1],
+                    xlsb = bytes[2],
                     value = ((msb << 16) + (lsb << 8) + xlsb) >> (8 - self.options.mode);
                 callback(value);
             });

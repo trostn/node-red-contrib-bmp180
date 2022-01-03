@@ -5,6 +5,13 @@
 	</div>
 	<br/>
 	<div class="form-row">
+		<label for="node-input-device"><i class="icon-envelope"></i>I2C-Device</label>
+		<select type="number" id="node-input-device">
+        <option value=1 data-i18n="bmp180.label.i2c1"></option>
+        <option value=2 data-i18n="bmp180.label.i2c2"></option>
+		</select>
+	</div>
+	<div class="form-row">
 		<label for="node-input-address"><i class="icon-envelope"></i>Address</label>
 		<select type="number" id="node-input-address">
         <option value=118 data-i18n="bmp180.label.0x76"></option>
@@ -53,6 +60,7 @@
         icon: 'bmp180.png',
 		defaults: {
 			name: {value: "", required: false},
+			device: {value: 1, require: true},
 			address: {value: 0x77,require: true},
 			mode: {value: 0,require: true},
 			units: {value: "Metric",require: true},

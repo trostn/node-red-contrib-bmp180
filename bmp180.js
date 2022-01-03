@@ -6,13 +6,14 @@ module.exports = function(RED) {
 	function bmp180(n) {
 		RED.nodes.createNode(this, n);
 		var node = this;		
+		var nodeDevice = n.device;
 		var nodeAddress = n.address;
 		var nodeMode = n.mode;
 		var nodeUnits = n.units;
 		var nodeSeaLevel = n.sealevel;
 		node.on('input', function(msg) {
 			try {
-				var sensor = new i2cbmp180({address: nodeAddress,mode: nodeMode, units: nodeUnits, SeaLevel: nodeSeaLevel});
+				var sensor = new i2cbmp180({device: nodeDevice, address: nodeAddress,mode: nodeMode, units: nodeUnits, SeaLevel: nodeSeaLevel});
 				sensor.read(function (data){
 					var msg = { payload: data };
 					node.send(msg);

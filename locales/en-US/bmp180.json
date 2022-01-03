@@ -1,6 +1,8 @@
 {
     "bmp180": {
         "label": {
+            "i2c1": "/dev/i2c-1",
+            "i2c2": "/dev/i2c-2",
             "0x76": "0x76",
             "0x77": "0x77",
             "LowResolution": "Low resolution(1xsample)",
